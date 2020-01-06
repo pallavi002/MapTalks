@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geometry Styles - Marker with HTML content</title>
+  <style type="text/css">
+    html,body{margin:0px;height:100%;width:100%}
+    .container{width:100%;height:100%}
+    .text_marker{font:30px bold sans-serif;color:#34495e;text-shadow:2px 0 white;width:160px}
+    #tooltip{
+      z-index: 20;
+      display: none;
+      position: absolute;
+      background-color: #e2e2e2;
+      padding: 20px;
+      width: auto;
+      box-shadow: #e2e2e2;
+    }
+    #video{
+      z-index: 20;
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+    }
+    h1{
+      z-index: 25;
+      position: absolute;
+    }
+    .pane{z-index:10;position:absolute;top:20px;right:60px;}
+    button{
+      height: 35px; width: 150px;
+      background: rgb(216, 221, 228);
+      font-size: 20px;
+      font-family:cursive;
+      color: white;
+      border: 1px solid gray;
+      cursor: pointer;
+    }
+    button:hover {
+      background: rgb(206, 205, 205);
+      opacity: 1;
+    }
+    h1 {
+      z-index:10;
+      position:absolute;
+      font-size: 50px;
+      top:140px;
+      margin-left: 30px;
+      margin-right: 70%;
+      opacity: 93%;
+    }
+    p {
+      z-index:10;
+      position:absolute;
+      font-size: 20px;
+      top:280px;
+      margin-left: 30px;
+      margin-right: 70%;
+    }
+    
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.js"></script>
+  <!-- <script type="text/javascript" src="https://munin.openstreetmap.org/openstreetmap.org/render.openstreetmap.org/network_out.html"></script> -->
+  <body>
+    <div id="tooltip"><img src="https://www.pandasecurity.com/mediacenter/src/uploads/2019/07/pandasecurity-How-do-hackers-pick-their-targets.jpg" width="200px"><br>Lorem ipsum dolor sit amet.</b></div>
+    <div id="video">
+      <!-- <video style="height: 90vh; width: 100vw;" controls>
+        <source src="http://www.projectdastaan.org/wp-content/uploads/2018/11/IMG_5800.mp4" type="video/mp4">
+      </video> -->
+      <button id="close">Close</button>
+      <!-- <iframe width="400" height="250" src="https://youtu.be/nHHUTFnGK4g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      <!-- <iframe width="956" height="538" src="https://www.youtube.com/embed/nHHUTFnGK4g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen controls></iframe> -->
+      <div style="padding:42.86% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/366544004?autoplay=1&loop=1&title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; gyroscope; accelerometer" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+    </div>
+    <div id="map" class="container"></div>
+    <div class="pane"><button>View All</button></div>
+    <h1>Project Dastaan Story Map</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <script>
+
+      var map = new maptalks.Map('map', {
+        center: [80,23.49856],
+        zoom: 5,
+        baseLayer: new maptalks.TileLayer('base', {
+          urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+          subdomains: ['a','b','c','d'],
+          attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>'
+        })
+      });
+
+      var center = map.getCenter();
+      var layer = new maptalks.VectorLayer('vector').addTo(map);
+      var marker1 = new maptalks.Marker(
+        center.sub(0.009, 0),
+        {
+          'symbol' : [
+            {
+              'markerFile'   : '1.png',
+              'markerWidth'  : 28,
+              'markerHeight' : 40,
+              'markerDx'     : 0,
+              'markerDy'     : 0,
+              'markerOpacity': 1,
+            }
+          ]
+        }
+      ).on('mouseenter', (e)=>{
+        var left  = e.domEvent.clientX  + 20 + "px";
+        var top  = e.domEvent.clientY  + 20 + "px";
+        console.log(e);
+        console.log({left, top});
+        document.getElementById('tooltip').style.left = left;
+        document.getElementById('tooltip').style.top = top;
+        document.getElementById('tooltip').style.display = 'block';
+        
+      }).on('mouseout', (e)=>{
+        document.getElementById('tooltip').style.display = 'none';
+
+      })
+
+      var marker2 = new maptalks.Marker(
+        center.sub(7.12, 4.8501),
+        {
+          'symbol' : [
+            {
+              'markerFile'   : '1.png',
+              'markerWidth'  : 28,
+              'markerHeight' : 40,
+              'markerDx'     : 0,
+              'markerDy'     : 0,
+              'markerOpacity': 1,
+            }
+          ]
+        }
+      ).on('mouseenter', (e)=>{
+        var left  = e.domEvent.clientX  + 20 + "px";
+        var top  = e.domEvent.clientY  + 20 + "px";
+        document.getElementById('tooltip').style.left = left;
+        document.getElementById('tooltip').style.top = top;
+        document.getElementById('tooltip').style.display = 'block';
+        
+      }).on('mouseout', (e)=>{
+        document.getElementById('video').style.display = 'none';
+        document.getElementById('tooltip').style.display = 'none';
+
+      }).on('click', (e)=>{
+        var left  =  "0px";
+        var top  = "0px";
+        document.getElementById('video').style.left = left;
+        document.getElementById('video').style.top = top;
+        document.getElementById('video').style.display = 'block';
+        document.getElementById('tooltip').style.display = 'none';
+        document.getElementById('video').webkitEnterFullscreen();
+         
+      });
+      document.getElementById("close").addEventListener('click', ()=>{
+        document.getElementById('video').style.display = 'none';
+      })
+      layer.addGeometry(marker1);
+      layer.addGeometry(marker2);
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geometry Styles - Marker with HTML content</title>
+  <style type="text/css">
+    html,body{margin:0px;height:100%;width:100%}
+    .container{width:100%;height:100%}
+    .text_marker{font:30px bold sans-serif;color:#34495e;text-shadow:2px 0 white;width:160px}
+    #tooltip{
+      z-index: 20;
+      display: none;
+      position: absolute;
+      background-color: #e2e2e2;
+      padding: 20px;
+      width: 20px;
+      box-shadow: #e2e2e2;
+    }
+    #video{
+      z-index: 20;
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+    }
+    h1{
+      z-index: 25;
+      position: absolute;
+    }
+    .pane{z-index:10;position:absolute;top:20px;right:60px;}
+    button{
+      height: 35px; width: 150px;
+      background: rgb(216, 221, 228);
+      font-size: 20px;
+      font-family:cursive;
+      color: white;
+      border: 1px solid gray;
+      cursor: pointer;
+    }
+    button:hover {
+      background: rgb(206, 205, 205);
+      opacity: 1;
+    }
+    h1 {
+      z-index:10;
+      position:absolute;
+      font-size: 50px;
+      top:140px;
+      margin-left: 30px;
+      margin-right: 70%;
+      opacity: 93%;
+    }
+    p {
+      z-index:10;
+      position:absolute;
+      font-size: 20px;
+      top:280px;
+      margin-left: 30px;
+      margin-right: 70%;
+      opacity: 93%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.js"></script>
+  <body>
+    <div id="tooltip" class="tooltip"><img src="https://www.pandasecurity.com/mediacenter/src/uploads/2019/07/pandasecurity-How-do-hackers-pick-their-targets.jpg"><br>Hey Best Friend.</b></div>
+    <div id="video">
+      <video style="height: 90vh; width: 100vw;" controls>
+        <source src="http://www.projectdastaan.org/wp-content/uploads/2018/11/IMG_5800.mp4" type="video/mp4">
+      </video>
+      <button id="close">Close</button> -->
+      
+      <!-- <iframe width="400" height="250" src="https://www.youtube.com/embed/aJOTlE1K90k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+    <!-- </div>
+    <div id="map" class="container"></div>
+    <div class="pane"><button>View All</button></div>
+    <h1>Project Dastaan Story Map</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <script>
+
+      var map = new maptalks.Map('map', {
+        center: [80,23.49856],
+        zoom: 5,
+        baseLayer: new maptalks.TileLayer('base', {
+          urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+          subdomains: ['a','b','c','d'],
+          attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>'
+        })
+      });
+      new maptalks.VectorLayer('vector', textbox).addTo(map);
+      var center = map.getCenter();
+      var layer = new maptalks.VectorLayer('vector').addTo(map);
+      var marker1 = new maptalks.Marker(
+        center.sub(0.009, 0),
+        {
+          'symbol' : [
+            {
+              'markerFile'   : '1.png',
+              'markerWidth'  : 28,
+              'markerHeight' : 40,
+              'markerDx'     : 0,
+              'markerDy'     : 0,
+              'markerOpacity': 1,
+            }
+          ]
+        }
+      ).on('mouseenter', (e)=>{
+        var left  = e.domEvent.clientX  + 20 + "px";
+        var top  = e.domEvent.clientY  + 20 + "px";
+        console.log(e);
+        console.log({left, top});
+        document.getElementById('tooltip').style.left = left;
+        document.getElementById('tooltip').style.top = top;
+        document.getElementById('tooltip').style.display = 'block';
+        
+      }).on('mouseout', (e)=>{
+        document.getElementById('tooltip').style.display = 'none';
+
+      })
+
+      var marker2 = new maptalks.Marker(
+        center.sub(7.12, 4.8501),
+        {
+          'symbol' : [
+            {
+              'markerFile'   : '1.png',
+              'markerWidth'  : 28,
+              'markerHeight' : 40,
+              'markerDx'     : 0,
+              'markerDy'     : 0,
+              'markerOpacity': 1,
+            }
+          ]
+        }
+      ).on('mouseenter', (e)=>{
+        var left  = e.domEvent.clientX  + 20 + "px";
+        var top  = e.domEvent.clientY  + 20 + "px";
+        document.getElementById('tooltip').style.left = left;
+        document.getElementById('tooltip').style.top = top;
+        document.getElementById('tooltip').style.display = 'block';
+        
+      }).on('mouseout', (e)=>{
+        document.getElementById('video').style.display = 'none';
+        document.getElementById('tooltip').style.display = 'none';
+
+      }).on('click', (e)=>{
+        var left  =  "0px";
+        var top  = "0px";
+        document.getElementById('video').style.left = left;
+        document.getElementById('video').style.top = top;
+        document.getElementById('video').style.display = 'block';
+        document.getElementById('tooltip').style.display = 'none';
+        document.getElementById('video').webkitEnterFullscreen();
+         
+      });
+      document.getElementById("close").addEventListener('click', ()=>{
+        document.getElementById('video').style.display = 'none';
+      })
+      layer.addGeometry(marker1);
+      layer.addGeometry(marker2);
+
+
+    </script>
+  </body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geometry Styles - Marker with HTML content</title>
+  <style type="text/css">
+    html,body{margin:0px;height:100%;width:100%}
+    .container{width:100%;height:100%}
+    .text_marker{font:30px bold sans-serif;color:#34495e;text-shadow:2px 0 white;width:160px}
+    #tooltip{
+      z-index: 20;
+      display: none;
+      position: absolute;
+      background-color: #e2e2e2;
+      padding: 20px;
+    }
+    
+    
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.js"></script>
+  <body>
+    <div id="tooltip"><img src="Untitled.png"><br>Hey Best Friend.</b>
+    </div>
+    
+    <div id="map" class="container"></div>
+    <script>
+
+      var map = new maptalks.Map('map', {
+        center: [80,23.49856],
+        zoom: 5,
+        baseLayer: new maptalks.TileLayer('base', {
+          urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+          subdomains: ['a','b','c','d'],
+          attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>'
+        })
+      });
+
+      var center = map.getCenter();
+
+      var layer = new maptalks.VectorLayer('vector').addTo(map);
+
+      // var marker = new maptalks.ui.UIMarker(center.sub(1, 0),
+      //   {
+      //     'draggable'     : false,
+      //     'single'        : true,
+      //     'content'       : '<div class="text_marker"><img src="1.png" id="hover-tooltip"><div id="tooltip"><img src="https://avatars0.githubusercontent.com/u/49591201?s=460&v=4" width="100%"><br>Pallavi LODI</div></div>'
+      //   }
+      // ).addTo(layer);
+      
+      // let tooltip = new maptalks.ui.ToolTip("dfcjdkvmerlkt");
+      // tooltip.addTo(marker);
+      var marker1 = new maptalks.Marker(
+        center.sub(0.009, 0),
+        {
+          'symbol' : [
+            {
+              'markerFile'   : '1.png',
+              'markerWidth'  : 28,
+              'markerHeight' : 40,
+              'markerDx'     : 0,
+              'markerDy'     : 0,
+              'markerOpacity': 1,
+            }
+          ]
+        }
+      ).on('mouseenter', (e)=>{
+        // e.target.updateSymbol({
+        //   'markerFile' : 'https://avatars0.githubusercontent.com/u/49591201?s=460&v=4',
+        //   'markerWidth'  : 150,
+        //   'markerHeight' : 150,
+        //   'textFaceName' : 'sans-serif',
+        //   'textName' : 'Pallavi Lodi',
+        //   'textSize' : 30,
+        //   'textDy'   : 24
+        // })
+        var left  = e.domEvent.clientX  + 20 + "px";
+        var top  = e.domEvent.clientY  + 20 + "px";
+        console.log(e);
+        console.log({left, top});
+        document.getElementById('tooltip').style.left = left;
+        document.getElementById('tooltip').style.top = top;
+
+        document.getElementById('tooltip').style.display = 'block';
+        
+        
+      }).on('mouseout', (e)=>{
+        // e.target.updateSymbol({
+        //   'markerFile' : '1.png',
+        //   'markerWidth'  : 28,
+        //   'markerHeight' : 40,
+        //   'textFaceName' : 'sans-serif',
+        //   'textName' : '',
+        //   'textSize' : 50,
+        //   'textDy'   : 24
+        // })
+        document.getElementById('tooltip').style.display = 'none';
+
+      })
+
+      var marker2 = new maptalks.Marker(
+        center.sub(7.12, 4.8501),
+        {
+          'symbol' : [
+            {
+              'markerFile'   : '1.png',
+              'markerWidth'  : 28,
+              'markerHeight' : 40,
+              'markerDx'     : 0,
+              'markerDy'     : 0,
+              'markerOpacity': 1,
+            }
+          ]
+        }
+      ).on('mouseenter', (e)=>{
+        // e.target.updateSymbol({
+        //   'markerFile' : 'https://avatars0.githubusercontent.com/u/49591201?s=460&v=4',
+        //   'markerWidth'  : 150,
+        //   'markerHeight' : 150,
+        //   'textFaceName' : 'sans-serif',
+        //   'textName' : 'Pallavi Lodi',
+        //   'textSize' : 30,
+        //   'textDy'   : 24
+        // })
+        var left  = e.domEvent.clientX  + 20 + "px";
+        var top  = e.domEvent.clientY  + 20 + "px";
+        console.log(e);
+        console.log({left, top});
+        document.getElementById('tooltip').style.left = left;
+        document.getElementById('tooltip').style.top = top;
+
+        document.getElementById('tooltip').style.display = 'block';
+        
+      }).on('mouseout', (e)=>{
+        // e.target.updateSymbol({
+        //   'markerFile' : '1.png',
+        //   'markerWidth'  : 28,
+        //   'markerHeight' : 40,
+        //   'textFaceName' : 'sans-serif',
+        //   'textName' : '',
+        //   'textSize' : 50,
+        //   'textDy'   : 24
+        // })
+        document.getElementById('tooltip').style.display = 'none';
+
+      }).on('click', (e)=>{
+        // e.target.updateSymbol({
+        //   'markerFile' : 'D:/dhiraj/videos/tml-vid.mp4',
+        //   'markerWidth': 300,
+        //   'markerHeight': 200,
+        //   textName : ""
+        // })  
+      });
+      layer.addGeometry(marker1);
+      layer.addGeometry(marker2);
+      
+      // document.getElementById('hover-tooltip').addEventListener("mouseover", (e)=>{
+      //   document.getElementById('tooltip').style.display = 'block';
+      // })
+
+      
+      // document.getElementById('hover-tooltip').addEventListener("mouseleave", (e)=>{
+      //   document.getElementById('tooltip').style.display = 'none';
+      // })
+
+    </script>
+  </body>
+</html> -->
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geometry Styles - Marker with HTML content</title>
+  <style type="text/css">
+    html,body{margin:0px;height:100%;width:100%}
+    .container{width:100%;height:100%}
+    .text_marker{font:30px bold sans-serif;color:#34495e;text-shadow:2px 0 white;width:160px}
+    #tooltip{
+      
+      display: none;
+    }
+    body{
+      position: absolute;
+      display: block;
+    }
+    
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.js"></script>
+  <body>
+
+    <div id="map" class="container">
+
+      <div id="tooltip"><img src="https://avatars0.githubusercontent.com/u/49591201?s=460&v=4" width="100%"><br>Pallavi LODI</div>
+    </div>
+    <script>
+
+      var map = new maptalks.Map('map', {
+        center: [100,50.49856],
+        zoom: 2,
+        baseLayer: new maptalks.TileLayer('base', {
+          urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+          subdomains: ['a','b','c','d'],
+          attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>'
+        })
+      });
+
+      var center = map.getCenter();
+
+      var layer = new maptalks.VectorLayer('vector').addTo(map);
+
+      // var marker = new maptalks.ui.UIMarker(center.sub(1, 0),
+      //   {
+      //     'draggable'     : false,
+      //     'single'        : true,
+      //     'content'       : '<div class="text_marker"><img src="1.png" id="hover-tooltip"><div id="tooltip"><img src="https://avatars0.githubusercontent.com/u/49591201?s=460&v=4" width="100%"><br>Pallavi LODI</div></div>'
+      //   }
+      // ).addTo(layer);
+      
+      // let tooltip = new maptalks.ui.ToolTip("dfcjdkvmerlkt");
+      // tooltip.addTo(marker);
+      var marker1 = new maptalks.Marker(
+        center.sub(0.009, 0),
+        {
+          'symbol' : [
+            {
+              'markerFile'   : '1.png',
+              'markerWidth'  : 28,
+              'markerHeight' : 40,
+              'markerDx'     : 0,
+              'markerDy'     : 0,
+              'markerOpacity': 1,
+            }
+          ]
+        }
+      ).on('mouseenter', (e)=>{
+        e.target.updateSymbol({
+          'markerFile' : 'https://avatars0.githubusercontent.com/u/49591201?s=460&v=4',
+          'markerWidth'  : 150,
+          'markerHeight' : 150,
+          'textFaceName' : 'sans-serif',
+          'textName' : 'Pallavi Lodi',
+          'textSize' : 30,
+          'textDy'   : 24
+        })
+        // document.getElementById('tooltip').style.visibility = 'visible';
+
+      }).on('mouseout', (e)=>{
+        e.target.updateSymbol({
+          'markerFile' : '1.png',
+          'markerWidth'  : 28,
+          'markerHeight' : 40,
+          'textFaceName' : 'sans-serif',
+          'textName' : '',
+          'textSize' : 50,
+          'textDy'   : 24
+        })
+      }).on('click',function() {
+        var body = document.querySelector('body');
+        body.style.background = url('https://www.youtube.com/watch?v=kmWTZ3KfnXE');
+      });
+
+      layer.addGeometry(marker1);
+      
+      // document.getElementById('hover-tooltip').addEventListener("mouseover", (e)=>{
+      //   document.getElementById('tooltip').style.display = 'block';
+      // })
+
+      
+      // document.getElementById('hover-tooltip').addEventListener("mouseleave", (e)=>{
+      //   document.getElementById('tooltip').style.display = 'none';
+      // })
+
+    </script>
+  </body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geometry Styles - Marker with HTML content</title>
+  <style type="text/css">
+    html,body{margin:0px;height:100%;width:100%}
+    .container{width:100%;height:100%}
+    .text_marker{font:30px bold sans-serif;color:#34495e;text-shadow:2px 0 white;width:160px}
+    #tooltip{
+        display: none;
+    }
+    
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.js"></script>
+  <body>
+
+    <div id="map" class="container"></div>
+    <script>
+
+      var map = new maptalks.Map('map', {
+        center: [80,23.49856],
+        zoom: 5,
+        baseLayer: new maptalks.TileLayer('base', {
+          urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+          subdomains: ['a','b','c','d'],
+          attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>'
+        })
+      });
+      
+      var marker = new maptalks.ui.UIMarker([80,20], {
+        'draggable'     : false,
+        'single'        : false,
+        'content'       : '<div class="text_marker"><img src="1.png" id="hover-tooltip"><div id="tooltip"><img src="Untitled.png" width="100%"><br>Lorem Ipsum Dolor</div></div>'
+      });
+      marker.addTo(map).show();
+
+      document.getElementById('hover-tooltip').addEventListener("mouseover", (e)=>{
+        document.getElementById('tooltip').style.display = 'block';
+      })
+
+      
+      document.getElementById('hover-tooltip').addEventListener("mouseleave", (e)=>{
+        document.getElementById('tooltip').style.display = 'none';
+      })
+
+    </script>
+  </body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geometry Styles - Image marker</title>
+  <style type="text/css">
+    html,body{margin:0px;height:100%;width:100%}
+    .container{width:100%;height:100%}
+    .pane{z-index:10;position:absolute;top:20px;right:60px;}
+    button{
+      height: 35px; width: 150px;
+      background: rgb(216, 221, 228);
+      font-size: 20px;
+      font-family:cursive;
+      color: white;
+      border: 1px solid gray;
+      cursor: pointer;
+    }
+    button:hover {
+      background: rgb(168, 167, 167);
+    }
+    /* tooltip */
+  .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+  
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.js"></script>
+  <body>
+
+    <div id="map" class="container"></div>
+    <div class="pane"><button>View All</button></div>
+    <div class="tooltip">
+      <span class="tooltiptext">Tooltip text
+        <img src="https://images.pexels.com/photos/60597/dahlia-red-blossom-bloom-60597.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" height="250px" width="250px"/>
+        <video width="320" height="240" controls>
+          <source src="https://www.youtube.com/watch?v=4MwkyWhYySs" type="video/mp4">
+        Your browser does not support the video tag.
+        </video>
+        <a href="www.google.com">click me and congo</a>
+        </span>
+    </div>
+    
+    <script>
+      
+      var map = new maptalks.Map('map', {
+        // center: [-0.113049,51.49856],
+        center: [80,23.49856],
+        zoom: 5,
+        baseLayer: new maptalks.TileLayer('base', {
+          urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+          subdomains: ['a','b','c','d'],
+          attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>'
+        })
+      });
+
+      var center = map.getCenter();
+      var layer = new maptalks.VectorLayer('vector').addTo(map);
+      var marker1 = new maptalks.Marker(
+        center.sub(1, 0),
+        {
+          'symbol' : {
+            'markerFile'   : "1.png",
+            'markerWidth'  : 28,
+            'markerHeight' : 40,
+            'markerDx'     : 0,
+            'markerDy'     : 0,
+            'markerOpacity': 1,
+          }
+        },
+      ).addTo(layer);
+
+
+      var marker2 = new maptalks.Marker(
+        center.sub(7.12, 4.8501),
+        {
+          'symbol' : {
+            'markerFile'   : '1.png',
+            'markerWidth'  : 28,
+            'markerHeight' : 40,
+            'markerDx'     : 0,
+            'markerDy'     : 0,
+            'markerOpacity': 1
+          }
+        }
+      ).addTo(layer);
+
+      var marker3 = new maptalks.Marker(
+        center.sub(0.003, 0),
+        {
+          'symbol' : {
+            'markerFile'   : '3.png',
+            'markerWidth'  : 28,
+            'markerHeight' : 40,
+            'markerDx'     : 0,
+            'markerDy'     : 0,
+            'markerOpacity': 1
+          }
+        }
+      ).addTo(layer);
+
+      var marker4 = new maptalks.Marker(
+        center,
+        {
+          'symbol' : {
+            'markerFile'   : '4.png',
+            'markerWidth'  : 28,
+            'markerHeight' : 40,
+            'markerDx'     : 0,
+            'markerDy'     : 0,
+            'markerOpacity': 1
+          }
+        }
+      ).addTo(layer);
+
+      var marker5 = new maptalks.Marker(
+        center.add(0.003, 0),
+        {
+          'symbol' : {
+            'markerFile'   : '5.png',
+            'markerWidth'  : 28,
+            'markerHeight' : 40,
+            'markerDx'     : 0,
+            'markerDy'     : 0,
+            'markerOpacity': 1
+          }
+        }
+      ).addTo(layer);
+
+      var marker6 = new maptalks.Marker(
+        center.add(0.006, 0),
+        { 
+          'symbol' : {
+            'markerFile'   : '6.png',
+            'markerWidth'  : 28,
+            'markerHeight' : 40,
+            'markerDx'     : 0,
+            'markerDy'     : 0,
+            'markerOpacity': 1
+          }
+        }
+      ).addTo(layer);
+
+    </script>
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular-animate.min.js.map"></script>
+  </body>
+</html> -->
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geometry Styles - Marker with HTML content</title>
+  <style type="text/css">
+    html,body{margin:0px;height:100%;width:100%}
+    .container{width:100%;height:100%}
+    .text_marker{font:30px bold sans-serif;color:#34495e;text-shadow:2px 0 white;width:160px}
+    #tooltip{
+        display: none;
+    }
+    
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.js"></script>
+  <body>
+
+    <div id="map" class="container"></div>
+    <script>
+
+      var map = new maptalks.Map('map', {
+        center: [80,50.49856],
+        zoom: 3,
+        baseLayer: new maptalks.TileLayer('base', {
+          urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+          subdomains: ['a','b','c','d'],
+          attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>'
+        })
+      });
+
+      var center = map.getCenter();
+
+      var layer = new maptalks.VectorLayer('vector').addTo(map);
+
+      var marker = new maptalks.ui.UIMarker(center.sub(1, 0),
+        {
+        'draggable'     : false,
+        'single'        : false,
+        'content'       : '<div class="text_marker"><img src="1.png" id="hover-tooltip"><div id="tooltip"><img src="https://avatars0.githubusercontent.com/u/49591201?s=460&v=4" width="100%"><br>Pallavi LODI</div></div>'
+      })
+
+      var marker1 = new maptalks.Marker(
+        center.sub(0.009, 0),
+        {
+        //   'symbol' : {
+            // 'markerFile'   : '1.png',
+            // 'markerWidth'  : 28,
+            // 'markerHeight' : 40,
+            // 'markerDx'     : 0,
+            // 'markerDy'     : 0,
+            // 'markerOpacity': 1
+        //   }
+            marker
+        }
+      ).addTo(layer);
+
+      
+
+      document.getElementById('hover-tooltip').addEventListener("mouseover", (e)=>{
+        document.getElementById('tooltip').style.display = 'block';
+      })
+
+      
+      document.getElementById('hover-tooltip').addEventListener("mouseleave", (e)=>{
+        document.getElementById('tooltip').style.display = 'none';
+      })
+
+    </script>
+  </body>
+</html> -->
+
+
+
+
+
+
+
+
+
