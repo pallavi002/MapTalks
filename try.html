@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TileLayer and Geo-Projections - Add an ArcGIS TileLayer</title>
+  <style type="text/css">
+    html,body{margin:0px;height:100%;width:100%}
+    .container{width:100%;height:100%}
+    .text_marker{font:30px bold sans-serif;color:#34495e;text-shadow:2px 0 white;width:160px}
+    #tooltip{
+      z-index: 20;
+      display: none;
+      position: absolute;
+      padding: 20px;
+      width: auto;
+      box-shadow: #e2e2e2;
+    }
+    #video{
+      z-index: 20;
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+    }
+    h1{
+      z-index: 25;
+      position: absolute;
+    }
+    .pane{z-index:10;position:absolute;top:20px;right:60px;}
+    .view-all{
+      height: 35px; width: 150px;
+      background: black;
+      font-size: 20px;
+      font-family: Karla;
+      color: white;
+      border: 1px solid gray;
+      cursor: pointer;
+      border-radius: 5px;
+      opacity: 80%;
+    }
+    .view-all:hover {
+      background: black;
+      opacity: 1;
+    }
+    h2 {
+      z-index:10;
+      position:absolute;
+      font-size: 50px;
+      font-family: Work Sans;
+      line-height: 1;
+      font-weight: 600;
+      top:140px;
+      color: white;
+      margin-left: 30px;
+      margin-right: 70%;
+    }
+    p {
+      z-index: 10;
+      position: absolute;
+      font-family: Karla ;
+      line-height: 1.3;
+      font-size: 16px;
+      font-weight: 400;
+      top: 280px;
+      color: white;
+      margin-left: 30px;
+      margin-right: 70%;
+    }
+    #close {
+      z-index: 10;
+      position: absolute;
+      font-size: 25px;
+      top: 5%;
+      margin-left: 93%;
+      cursor: pointer;
+    }
+    .page_logo{
+      z-index: 10;
+      pointer-events:none;
+      position:absolute;
+      top:50px;left:2%;right:0;opacity:1;
+      -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+      /* z-index:4; */
+	}
+	.site-header--subnavActive~#content 
+	.page_logo{
+		font-size:1%
+		}
+    span {
+      z-index: 10;
+      position: absolute;
+      font-family: Karla ;
+      color: white;
+    }
+
+
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+  <link href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Karla|Work+Sans&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.js"></script>
+  <body>
+    <div id="tooltip"><img src="https://www.pandasecurity.com/mediacenter/src/uploads/2019/07/pandasecurity-How-do-hackers-pick-their-targets.jpg" width="200px"><br><span>Lorem ipsum dolor sit amet.</span></b></div>
+    <div id="video">
+      <!-- <video style="height: 90vh; width: 100vw;" controls>
+        <source src="http://www.projectdastaan.org/wp-content/uploads/2018/11/IMG_5800.mp4" type="video/mp4">
+      </video> -->
+      <!-- <button id="close">Close</button> -->
+      <!-- <iframe width="400" height="250" src="https://youtu.be/nHHUTFnGK4g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      <!-- <iframe width="956" height="538" src="https://www.youtube.com/embed/nHHUTFnGK4g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen controls></iframe> -->
+    
+    <div style="padding:42.86% 0 0 0;position:relative;">
+      <button id="close"><i class="fa fa-times"></i></button>
+      <!-- popup -->
+      <div>
+        
+      </div>
+      <iframe src="https://player.vimeo.com/video/366544004?autoplay=1&loop=1&title=0&byline=0&portrait=0" 
+      style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" 
+      allow=" fullscreen; gyroscope; accelerometer" allowfullscreen></iframe>
+    </div><script src="https://player.vimeo.com/api/player.js"></script>
+    </div>
+    <div id="map" class="container"></div>
+    <div class="pane"><button class="view-all">View All</button></div>
+    <div class="page_logo">
+			<img src="http://www.projectdastaan.org/wp-content/uploads/2020/01/Testrun-White.png" width="80px" alt="Turquoise Mountain">
+		</div>
+    <h2>Project Dastaan Story Map</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+    <script>
+      var arcUrl = 'https://services.arcgisonline.com/arcgis/rest/services/ESRI_Imagery_World_2D/MapServer';
+
+      maptalks.SpatialReference.loadArcgis(arcUrl + '?f=pjson', function (err, conf) {
+        if (err) {
+          throw new Error(err);
+        }
+        var ref = conf.spatialReference;
+        ref.projection = 'EPSG:4326';
+
+        var map = new maptalks.Map('map', {
+          center: [80,23.49856],
+          zoom: 3,
+          minZoom: 1,
+          maxZoom : 16,
+          spatialReference : ref,
+          baseLayer: new maptalks.TileLayer('base', {
+            'tileSystem' : conf.tileSystem,
+            'tileSize' : conf.tileSize, // [512, 512]
+            'urlTemplate' : arcUrl + '/tile/{z}/{y}/{x}',
+            'attribution' : '&copy; <a target="_blank" href="' + arcUrl + '"">ArcGIS</a>'
+          })
+        });
+        var center = map.getCenter();
+      var layer = new maptalks.VectorLayer('vector').addTo(map);
+      var marker1 = new maptalks.Marker(
+        center.sub(0.009, 0),
+        {
+          'symbol' : [
+            {
+              'markerFile'   : '1.png',
+              'markerWidth'  : 28,
+              'markerHeight' : 40,
+              'markerDx'     : 0,
+              'markerDy'     : 0,
+              'markerOpacity': 1,
+            }
+          ]
+        }
+      ).on('mouseenter', (e)=>{
+        var left  = e.domEvent.clientX  + 20 + "px";
+        var top  = e.domEvent.clientY  + 20 + "px";
+        console.log(e);
+        console.log({left, top});
+        document.getElementById('tooltip').style.left = left;
+        document.getElementById('tooltip').style.top = top;
+        document.getElementById('tooltip').style.display = 'block';
+        
+      }).on('mouseout', (e)=>{
+        document.getElementById('tooltip').style.display = 'none';
+
+      }).on('click', (e)=>{
+        var left  =  "0px";
+        var top  = "0px";
+        document.getElementById('video').style.left = left;
+        document.getElementById('video').style.top = top;
+        document.getElementById('video').style.display = 'block';
+        document.getElementById('tooltip').style.display = 'none';
+        document.getElementById('video').webkitEnterFullscreen();
+        document.querySelector('iframe').setAttribute("allow", "autoplay");
+         
+      });
+      var marker2 = new maptalks.Marker(
+        center.sub(7.12, 4.8501),
+        {
+          'symbol' : [
+            {
+              'markerFile'   : '1.png',
+              'markerWidth'  : 28,
+              'markerHeight' : 40,
+              'markerDx'     : 0,
+              'markerDy'     : 0,
+              'markerOpacity': 1,
+            }
+          ]
+        }
+      ).on('mouseenter', (e)=>{
+        var left  = e.domEvent.clientX  + 20 + "px";
+        var top  = e.domEvent.clientY  + 20 + "px";
+        document.getElementById('tooltip').style.left = left;
+        document.getElementById('tooltip').style.top = top;
+        document.getElementById('tooltip').style.display = 'block';
+        
+      }).on('mouseout', (e)=>{
+        document.getElementById('video').style.display = 'none';
+        document.getElementById('tooltip').style.display = 'none';
+
+      }).on('click', (e)=>{
+        var left  =  "0px";
+        var top  = "0px";
+        document.getElementById('video').style.left = left;
+        document.getElementById('video').style.top = top;
+        document.getElementById('video').style.display = 'block';
+        document.getElementById('tooltip').style.display = 'none';
+        document.getElementById('video').webkitEnterFullscreen();
+        // document.querySelector('iframe').setAttribute("autoplay");
+         
+      });
+      document.getElementById("close").addEventListener('click', ()=>{
+        document.getElementById('video').style.display = 'none';
+      })
+      layer.addGeometry(marker1);
+      layer.addGeometry(marker2);
+      });
+      
+    </script>
+  </body>
+</html>
